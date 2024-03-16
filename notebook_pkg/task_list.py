@@ -33,6 +33,15 @@ class Task:
         """
         self.status = not self.status
 
+    def _getStatus(self):
+        if self.status:
+            return "Active"
+        else:
+            return "Complete"
+
+    def displayTask(self):
+        print(f"{self.id} - {self.title}       ({self._getStatus()})")
+
 
 class TaskList:
     """
@@ -44,10 +53,15 @@ class TaskList:
         self.tasklist = []
 
     def _find_task(self, task_id):
+        print(task_id)
         for task in self.tasklist:
-            if task.id == task_id:
+            if str(task.id) == str(task_id):
                 return task
         return None
+
+    def toggle_status(self, task_id):
+        task = self._find_task(task_id)
+        task.status_toggle()
 
     def search_task(self, search_keyword):
         """
@@ -94,6 +108,14 @@ class TaskList:
            :return: list of task
         """
         return [task for task in self.tasklist if task.status]
+
+    def remove_task(self, task_id):
+        """
+        Uses to rmove task from task list based on given task id.
+        :param task_id: string id represents task id
+        :return: list of tasks except of specific task based on its id
+        """
+        self.tasklist = [task for task in self.tasklist if task.id != int(task_id)]
 
     def complete_tasks(self):
         """
